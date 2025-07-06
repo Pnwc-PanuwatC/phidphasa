@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="a27d3c4e-4916-4bb9-b8de-89c4080b91bf"></script>
+    <link rel="icon" href="/Logo/Favicon.webp">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Phidphasa - ผิดภาษา แก้เขียนผิดภาษา, แก้คำผิดภาษาไทยด้วย ChatGPT">
+    <meta keyword="Phidphasa, ผิดภาษา, แก้คำผิด, ChatGPT, ภาษาไทย, คำผิด, แก้ไขคำผิด, คำผิดภาษาไทย, Thai">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Phidphasa - ผิดภาษา</title>
+</head>
+<body>
+  <h1 class="absolute inset-1 mb-[10rem] flex items-center justify-center text-4xl z-[-1]" id="title">Phidphasa - ผิดภาษา</h1>    <div class="flex justify-center items-center h-screen">
+    <input type="text" placeholder="ใส่ข้อความที่นี่ / วางได้เลย" id="inputtext" class=" p-2 rounded-full bg-[#B1B2B5] text-black placeholder:text-gray-600">
+      <button id="fixword" class="ml-2 p-2 rounded-full bg-[#B1B2B5]" onclick="fixtextgpt()">แก้คำผิดด้วย ChatGPT</button>
+    </div>
+    <button onclick="copyContent()" class="copybutton" style="position: fixed; bottom: 10px; right: 10px; padding: 10px; z-index: 999; background-color: #ffffff; border-radius: 2rem; transform: scale(1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">Copy</button>
+    <!--Top Links-->
+    <button onclick="tipstoggle()" style="position: fixed; top: 10px; right: 10px; padding: 10px; z-index: 999; background-color: #555; color: white; border-radius: 2rem; transform: scale(1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">วิธีใช้</button>
+    <button onclick="navigateWithTransition('https://pnwassets.netlify.app/madebypnwc')" style="position: fixed; top: 10px; left: 10px; padding: 10px; z-index: 999; background-color: #555; color: white; border-radius: 2rem; transform: scale(1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fa-solid fa-grip"></i>&nbsp;More Apps</button>
+    <!--<button onclick="moreappstoggle()" style="position: fixed; top: 10px; left: 10px; padding: 10px; z-index: 999; background-color: #555; color: white; border-radius: 2rem; transform: scale(1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"><i class="fa-solid fa-grip"></i>&nbsp;More Apps</button>-->
+
+      <div class="bg-[#B1B2B5] fixed bottom-0 left-0 w-full h-64 flex justify-center items-center">
+        <span class="text-2xl" id="output">ข้อความที่เปลี่ยนภาษาแล้วจะออกที่นี่</span>
+    </div>
+</body>
+</html>
+
+  <script>
+    var input = document.getElementById('inputtext');
+    input.focus();
+    input.select();
+  </script>
+
+<script>
+    const replacements = { // EN to TH
+        'q': 'ๆ', 'w': 'ไ', 'e': 'ำ', 'r': 'พ', 't': 'ะ', 'y': 'ั', 'u': 'ี', 'i': 'ร', 'o': 'น', 'p': 'ย', '[' : 'บ', ']' : 'ล', //qwertyuiop[]
+        'a': 'ฟ', 's': 'ห', 'd': 'ก', 'f': 'ด', 'g': 'เ', 'h': '้', 'j': '่', 'k': 'า', 'l': 'ส', ';': 'ว', "'" : 'ง', //asdfghjkl;'
+        'z': 'ผ', 'x': 'ป', 'c': 'แ', 'v': 'อ', 'b': 'ิ', 'n': 'ื', 'm': 'ท', ',': 'ม', '.': 'ใ','/' : 'ฝ', //zxcvbnm,./
+
+        '1': 'ๅ', '2': '/', '3': '-', '4': 'ภ', '5': 'ถ', '6': 'ุ', '7': 'ึ', '8': 'ค', '9': 'ต', '0': 'จ', '-': 'ข', '=': 'ช', //num1
+        '!': '+', '@': '๑', '#': '๒', '$': '๓', '%': '๔', '^': 'ู', '&': '฿', '*': '๕', '(': '๖', ')': '๗', '_': '๘', '+': '๙', //num2
+
+        'Q': '๐', 'W': '"', 'E': 'ฎ', 'R': 'ฑ', 'T': 'ธ', 'Y': 'ํ', 'U': '๊', 'I': 'ณ', 'O': 'ฯ', 'P': 'ญ', '{' : 'ฐ', '}' : ',', //QWERTYUIOP{}
+        'A': 'ฤ', 'S': 'ฆ', 'D': 'ฏ', 'F': 'โ', 'G': 'ฌ', 'H': '็', 'J': '๋', 'K': 'ษ', 'L': 'ศ', ':': 'ซ', '"' : '.', //ASDFGHJKL:"
+        'Z': '(', 'X': ')', 'C': 'ฉ', 'V': 'ฮ', 'B': 'ฺ', 'N': '์', 'M': '?', '<': 'ฒ', '>': 'ฬ','?' : 'ฦ', //ZXCVBNM<>?
+        '\\': 'ฃ', '|': 'ฅ', // Additional characters
+    };
+
+    // Replace text
+    const replaceText = () => {
+        const inputElement = document.getElementById('inputtext');
+        const outputElement = document.getElementById('output');
+        let inputText = inputElement.value;
+
+        let replacedText = inputText.split('').map(char => replacements[char] || char).join('');
+        
+        outputElement.innerHTML = replacedText;
+    };
+
+    document.getElementById('inputtext').addEventListener('input', replaceText);
+</script>
+
+<script>
+  // Copy text
+  const copyContent = async () => {
+    const outputElement = document.getElementById('output');
+    const text = outputElement.innerHTML.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('ก็อปข้อความแล้ว'), console.log('Copied to clipboard:', text);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
+  // Fix text function
+  const fixtextgpt = () => {
+    const outputElement = document.getElementById('output');
+    const outputText = outputElement.innerHTML.trim();
+
+    // Check/Alert
+    if (outputText === '' || outputText === 'ข้อความที่เปลี่ยนภาษาแล้วจะออกที่นี่') {
+      alert('กรุณาใส่ข้อความ');
+      return;
+    }
+
+    // Redirect to ChatGPT
+    window.location.href = 'https://chatgpt.com/?q=แก้คำผิด: ' + encodeURIComponent(outputText);
+  };
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.ctrlKey) {
+      copyContent();
+    } else if (event.key === 'Enter' && event.ctrlKey) {
+      fixtextgpt();
+    }
+  });
+</script>
+
+<script>
+const tipstoggle = () => {
+    if (document.getElementById('tips')) {
+        return;
+    }
+
+    const tips = document.createElement('div');
+    tips.style.position = 'fixed';
+    tips.style.top = '50%';
+    tips.style.width = '90%';
+    tips.style.transform = 'translate(5%, -50%)';
+    tips.style.backgroundColor = 'rgba(85, 85, 85, 0.75)'; 
+    tips.style.backdropFilter = 'blur(4px)';
+    tips.style.color = 'white';
+    tips.style.padding = '24px';
+    tips.style.borderRadius = '24px';
+    tips.style.zIndex = '1000';
+    tips.id = 'tips';
+
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    if (mediaQuery.matches) {
+        tips.style.width = '50%';
+        tips.style.transform = 'translate(50%, -50%)';
+    }
+
+    tips.innerHTML = `
+        <button onclick="document.getElementById('tips').remove()" style="position: absolute; top: 10px; right: 10px;" >
+            <i class="fa-solid fa-xmark" style="color: #ff9999;"></i>
+        </button>
+        <h2>Tips</h2></br>
+        <ul>
+            <li>ใส่ข้อความที่ต้องการแก้ไขในช่องข้อความ</li></br>
+            <li>กดปุ่ม "แก้คำผิดด้วย ChatGPT" เพื่อแก้ไขคำผิด</li></br>
+            <li>กดปุ่ม "Copy" เพื่อคัดลอกข้อความที่แก้ไขแล้ว</li>
+            </br>
+            <hr>
+            </br>
+            <p>คีย์ลัด:</br>Enter = Copy ข้อความ</br>Enter + Ctrl = แก้คำผิดด้วย ChatGPT</p>
+            <p>© Phidphasa 2025 by Pnwc</br>Made in 🇹🇭</p>
+            <p>Ver.1.01</p>
+        </ul>
+    `;
+    document.body.appendChild(tips);
+};
+</script>
+<script>
+  // fade-out effect
+  function navigateWithTransition(url) {
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+          window.location.href = url;
+      }, 500);
+  }
+</script>
+<!--More Apps Toggle-->
+<!--
+<script>
+  const moreappstoggle = () => {
+    if (document.getElementById('moreapps')) {
+        return;
+    }
+
+    const moreapps = document.createElement('div');
+    moreapps.style.position = 'fixed';
+    moreapps.style.width = '100%';
+    moreapps.style.height = '100%';
+    moreapps.style.top = '50%';
+    moreapps.style.left = '50%';
+    moreapps.style.transform = 'translate(-50%, -50%)';
+    moreapps.style.backgroundColor = 'rgba(85, 85, 85, 0.5)';
+    moreapps.style.backdropFilter = 'blur(8px)';
+    moreapps.style.color = 'white';
+    moreapps.style.padding = '24px';
+    moreapps.style.borderRadius = '0px';
+    moreapps.style.zIndex = '1000';
+    moreapps.id = 'moreapps';
+
+    moreapps.innerHTML = `
+        <button onclick="document.getElementById('moreapps').remove()" style="position: absolute; top: 10px; right: 10px;">
+            <i class="fa-solid fa-xmark" style="color: #ff9999;"></i>
+        </button>
+        <h2>More Apps by Pnwc</h2>
+        <ul>
+            <li><a href="https://phidphasa.netlify.app" target="_blank"><img src="/Logo/Logo - Full Webp.webp" alt="logo">Phidphasa - ผิดภาษา</a></li>
+            <li><a href="https://hw58tub2.netlify.app" target="_blank"><img src="https://hw58tub2.netlify.app/assets/Favicon-C-rIcu7Q.png" alt="logo">HW58Tub2 Website</a></li>
+        </ul>
+    `;
+    document.body.appendChild(moreapps);
+    }
+</script>
+-->

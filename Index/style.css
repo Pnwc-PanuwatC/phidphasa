@@ -1,0 +1,67 @@
+
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+html{
+    font-family: Prompt;
+    background-color: #FFF5E6;
+}
+
+body{
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+    font-family: Prompt;
+}
+
+h1{
+    font-family: Prompt;
+}
+
+@media (max-width: 768px) {
+    #title {
+      font-size: 1.5rem; /* Adjust font size for mobile */
+    }
+
+    h1 {
+      font-size: 1.5rem; /* Adjust font size for mobile */
+      margin-bottom: 2rem; /* Reduce margin */
+    }
+
+    #inputtext {
+      width: 90%; /* Make input field take up most of the screen width */
+      font-size: 1rem; /* Adjust font size */
+    }
+
+    button {
+      font-size: 0.9rem; /* Adjust font size for buttons */
+      padding: 0.5rem; /* Adjust padding */
+    }
+
+    #output {
+      font-size: 1rem; /* Adjust font size for output text */
+      text-align: center; /* Center align text */
+    }
+
+    .copybutton{
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999;
+        background-color: #ffffff;
+        border-radius: 2rem;
+        font-size: 0.9rem; /* Adjust button font size */
+        padding: 0.5rem; /* Adjust padding */
+    }
+
+    #fixword {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      z-index: 999;
+      background-color: #ffffff80;
+      background: blur(4px);
+      border-radius: 2rem;
+      font-size: 0.9rem; /* Adjust button font size */
+      padding: 0.5rem; /* Adjust padding */
+    }
+  }
+  
